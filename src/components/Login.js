@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, Image, ActivityIndicator } from 'react-native';
+import { Text, Image, ActivityIndicator, LayoutAnimation } from 'react-native';
 import LoginForm from './LoginForm';
 
 class Login extends Component {
@@ -9,6 +9,10 @@ class Login extends Component {
       loading: true,
     };
   }
+
+    componentWillUpdate() {
+      LayoutAnimation.easeInEaseOut();
+    }
 
     setToggleTimeout() {
       this._timer = setTimeout(() => {

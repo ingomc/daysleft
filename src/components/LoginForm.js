@@ -27,10 +27,10 @@ class LoginForm extends Component {
                 padding: 0
             }}>
                 <FormLabel>E-Mail-Adresse:</FormLabel>
-                <FormInput borderRadius={3} placeholder='max@mustermann.de' ref='forminput' textInputRef='email'/>
+                <FormInput inputStyle={{ width: null }} borderRadius={3} placeholder='max@mustermann.de' ref='forminput' textInputRef='email'/>
 
                 <FormLabel>Passwort:</FormLabel>
-                <FormInput secureTextEntry borderRadius={3} placeholder='Passwort' ref='forminput' textInputRef='password'/>
+                <FormInput inputStyle={{ width: null }} secureTextEntry borderRadius={3} placeholder='Passwort' ref='forminput' textInputRef='password'/>
                 <Button buttonStyle={{
                     marginTop: 20,
                     marginBottom: 20,
