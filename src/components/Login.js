@@ -28,11 +28,11 @@ class Login extends Component {
             style={{ flex:1, backgroundColor: 'transparent' }}
             size="large"
             color="#ffffff" />
-        )
+        );
       }
       return (
         <LoginForm />
-      )
+      );
     }
     componentDidMount() {
       this.setToggleTimeout();
