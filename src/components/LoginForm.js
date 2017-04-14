@@ -3,58 +3,58 @@ import {View, Text, Image} from 'react-native';
 import {Card, Button, SocialIcon, FormLabel, FormInput} from 'react-native-elements';
 
 class LoginForm extends Component {
-    render() {
-        return (
+  render() {
+    return (
+        <View style={styles.containerStyle}>
             <View style={{
-                flex: 1,
-                backgroundColor: 'red',
                 flexDirection: 'row',
                 justifyContent: 'center',
-                alignItems: 'stretch',
-
+                alignItems: 'center'
             }}>
-                <Image source={require('../images/bg-login.jpg')} style={styles.backgroundImage}>
-                    <View style={styles.containerStyle}>
-                        <View style={styles.formStyle}>
-                            <FormLabel labelStyle={{ color: "white" }}>E-Mail-Adresse:</FormLabel>
-                            <View>
-                              <FormInput borderRadius={3} placeholder='max@mustermann.de' inputStyle={{ width: null, backgroundColor:'white', padding:10}} ref='forminput' textInputRef='email'/>
-                            </View>
-                            <View>
-                              <Button buttonStyle={{ marginTop:20, marginBottom:20, marginLeft:20, marginRight:20 }} raised borderRadius={3} backgroundColor='#397af8' title='Einloggen / Registrieren'/>
-                            </View>
-                        </View>
-                        <SocialIcon style={{
-                        margin: 18,
-                        marginTop: 36,
-                        width: null,
-                        }} title='Sign In With Facebook' button type='facebook'/>
-                    </View>
-                </Image>
+                <Image style={{
+                    width: 48,
+                    height: 48
+                }} source={require('../images/app-icon.png')}></Image>
+                <Text style={{
+                    fontSize: 30,
+                    marginLeft: 10,
+                    color: 'white'
+                }}>Daysleft</Text>
             </View>
+            <Card containerStyle={{
+                borderRadius: 3,
+                backgroundColor: 'rgba(255,255,255,0.9)',
+                padding: 0
+            }}>
+                <FormLabel>E-Mail-Adresse:</FormLabel>
+                <FormInput borderRadius={3} placeholder='max@mustermann.de' ref='forminput' textInputRef='email'/>
 
-        );
-    }
+                <FormLabel>Passwort:</FormLabel>
+                <FormInput secureTextEntry borderRadius={3} placeholder='Passwort' ref='forminput' textInputRef='password'/>
+                <Button buttonStyle={{
+                    marginTop: 20,
+                    marginBottom: 20,
+                    marginLeft: 20,
+                    marginRight: 20
+                }} raised borderRadius={3} backgroundColor='#397af8' title='Einloggen / Registrieren'/>
+            </Card>
+            <View style={styles.formStyle}></View>
+            <SocialIcon style={{
+                margin: 18,
+                marginTop: 36,
+                width: null
+            }} title='Sign In With Facebook' button type='facebook'/>
+        </View>
+    );
+  }
 }
 
-var styles = {
-    backgroundImage: {
-        flex: 1,
-        width: null,
-        height: null,
-        resizeMode: 'cover',
-    },
+const styles = {
     containerStyle: {
-      flex:1,
-      padding:10,
-      justifyContent: 'center',
-      backgroundColor: 'rgba(0,0,0,0.5)',
-    },
-    formStyle: {
-        justifyContent: 'flex-start',
-        alignItems: 'stretch',
-        width: null,
+        flex: 1,
+        padding: 10,
+        justifyContent: 'center',
+        backgroundColor: 'rgba(0,0,0,0.5)'
     }
 };
-
 export default LoginForm;

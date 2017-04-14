@@ -15,7 +15,7 @@ class LoginForm extends Component {
       this.setState({animating: !this.state.animating});
       this.setToggleTimeout();
       Actions.login();
-    }, 1000);
+    }, 2000);
   }
 
   componentDidMount() {
