@@ -1,1 +1,1 @@
-export const EMAIL_CHANGED = 'email_changed';
+export const INPUT_CHANGED = 'input_changed';

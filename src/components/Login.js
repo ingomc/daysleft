@@ -1,46 +1,44 @@
-import React, { Component } from 'react';
-import { Text, Image, ActivityIndicator, LayoutAnimation } from 'react-native';
+import React, {Component} from 'react';
+import {StatusBar, Text, Image, ActivityIndicator, LayoutAnimation} from 'react-native';
 import LoginForm from './LoginForm';
 
 class Login extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: true,
-    };
-  }
+    constructor(props) {
+        super(props);
+        this.state = {
+            loading: true
+        };
+    }
 
     componentWillUpdate() {
-      LayoutAnimation.easeInEaseOut();
+        LayoutAnimation.easeInEaseOut();
     }
 
     setToggleTimeout() {
-      this._timer = setTimeout(() => {
-        this.setState({loading: !this.state.loading});
-      }, 2000);
+        this._timer = setTimeout(() => {
+            this.setState({
+                loading: !this.state.loading
+            });
+        }, 2000);
     }
-
 
     renderForm() {
-      if (this.state.loading == true) {
-        return (
-          <ActivityIndicator
-            style={{ flex:1, backgroundColor: 'transparent' }}
-            size="large"
-            color="#ffffff" />
-        );
-      }
-      return (
-        <LoginForm />
-      );
+        if (this.state.loading == true) {
+            return (<ActivityIndicator style={{
+                flex: 1,
+                backgroundColor: 'transparent'
+            }} size="large" color="#ffffff"/>);
+        }
+        return (<LoginForm />);
     }
     componentDidMount() {
-      this.setToggleTimeout();
+        this.setToggleTimeout();
     }
 
     render() {
         return (
             <Image source={require('../images/bg-login.jpg')} style={styles.backgroundImage}>
+                <StatusBar hidden={true}/>
                 {this.renderForm()}
             </Image>
         );

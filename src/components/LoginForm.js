@@ -1,8 +1,17 @@
 import React, {Component} from 'react';
 import {View, Text, Image} from 'react-native';
 import {Card, Button, SocialIcon, FormLabel, FormInput} from 'react-native-elements';
+import Reactotron from 'reactotron-react-native';
+import { connect } from 'react-redux';
+import { inputChanged } from '../actions';
+
 
 class LoginForm extends Component {
+  onButtonPress() {
+    Reactotron.log(this.props.email);
+    Reactotron.log(this.props.password);
+    
+  }
   render() {
     return (
         <View style={styles.containerStyle}>
@@ -27,23 +36,37 @@ class LoginForm extends Component {
                 padding: 0
             }}>
                 <FormLabel>E-Mail-Adresse:</FormLabel>
-                <FormInput inputStyle={{ width: null }} borderRadius={3} placeholder='max@mustermann.de' ref='forminput' textInputRef='email'/>
+                <FormInput
+                  inputStyle={{ width: null }}
+                  borderRadius={3}
+                  placeholder='max@mustermann.de'
+                  ref='forminput'
+                  textInputRef='email'
+                  value={this.props.email}
+                  onChangeText={value => this.props.inputChanged({ prop: 'email', value })}
+                />
 
                 <FormLabel>Passwort:</FormLabel>
-                <FormInput inputStyle={{ width: null }} secureTextEntry borderRadius={3} placeholder='Passwort' ref='forminput' textInputRef='password'/>
-                <Button buttonStyle={{
+                <FormInput
+                value={this.props.password}
+                onChangeText={value => this.props.inputChanged({ prop: 'password', value })}
+                inputStyle={{ width: null }} secureTextEntry borderRadius={3} placeholder='Passwort' ref='forminput' textInputRef='password'/>
+
+                <Button
+                    onPress={this.onButtonPress.bind(this)}
+                    buttonStyle={{
                     marginTop: 20,
                     marginBottom: 20,
                     marginLeft: 20,
                     marginRight: 20
                 }} raised borderRadius={3} backgroundColor='#397af8' title='Einloggen / Registrieren'/>
             </Card>
-            <View style={styles.formStyle}></View>
+
             <SocialIcon style={{
                 margin: 18,
                 marginTop: 36,
                 width: null
-            }} title='Sign In With Facebook' button type='facebook'/>
+            }} title='Mit Facebook einloggen' button type='facebook'/>
         </View>
     );
   }
@@ -57,4 +80,13 @@ const styles = {
         backgroundColor: 'rgba(0,0,0,0.5)'
     }
 };
-export default LoginForm;
+
+const mapStateToProps = ({ auth }) => {
+  const { email, password } = auth;
+
+  return { email, password };
+};
+
+export default connect(mapStateToProps, {
+  inputChanged
+})(LoginForm);
