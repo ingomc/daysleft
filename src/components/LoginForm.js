@@ -1,17 +1,52 @@
 import React, {Component} from 'react';
-import {View, Text, Image} from 'react-native';
+import {View, Text, Image } from 'react-native';
 import {Card, Button, SocialIcon, FormLabel, FormInput} from 'react-native-elements';
 import Reactotron from 'reactotron-react-native';
 import { connect } from 'react-redux';
-import { inputChanged } from '../actions';
+import { inputChanged, loginUser } from '../actions';
+import { Spinner } from './common';
 
 
 class LoginForm extends Component {
   onButtonPress() {
-    Reactotron.log(this.props.email);
-    Reactotron.log(this.props.password);
-    
+    Reactotron.log(this.props);
+
+    const { email, password } = this.props;
+
+    this.props.loginUser({ email, password });
   }
+  renderError() {
+      if (this.props.error) {
+        return (
+          <Text style={styles.errorTextStyle}>
+            {this.props.error}
+          </Text>
+        );
+      }
+
+  }
+  renderButton() {
+    if (this.props.loading) {
+      return (
+        <Spinner />
+      );
+    }
+    return (
+      <Button
+        onPress={this.onButtonPress.bind(this)}
+        buttonStyle={{
+            marginTop: 20,
+            marginBottom: 20,
+            marginLeft: 20,
+            marginRight: 20
+        }}
+        raised
+        borderRadius={3}
+        backgroundColor='#397af8'
+        title='Einloggen / Registrieren'
+      />
+    );
+}
   render() {
     return (
         <View style={styles.containerStyle}>
@@ -52,14 +87,10 @@ class LoginForm extends Component {
                 onChangeText={value => this.props.inputChanged({ prop: 'password', value })}
                 inputStyle={{ width: null }} secureTextEntry borderRadius={3} placeholder='Passwort' ref='forminput' textInputRef='password'/>
 
-                <Button
-                    onPress={this.onButtonPress.bind(this)}
-                    buttonStyle={{
-                    marginTop: 20,
-                    marginBottom: 20,
-                    marginLeft: 20,
-                    marginRight: 20
-                }} raised borderRadius={3} backgroundColor='#397af8' title='Einloggen / Registrieren'/>
+
+                {this.renderError()}
+                {this.renderButton()}
+
             </Card>
 
             <SocialIcon style={{
@@ -78,15 +109,22 @@ const styles = {
         padding: 10,
         justifyContent: 'center',
         backgroundColor: 'rgba(0,0,0,0.5)'
+    },
+    errorTextStyle: {
+      fontSize: 10,
+      paddingTop:5,
+      alignSelf: 'center',
+      color: 'red'
     }
 };
 
 const mapStateToProps = ({ auth }) => {
-  const { email, password } = auth;
+  const { email, password, error, loading } = auth;
 
-  return { email, password };
+  return { email, password, error, loading };
 };
 
+
 export default connect(mapStateToProps, {
-  inputChanged
+  inputChanged, loginUser
 })(LoginForm);
