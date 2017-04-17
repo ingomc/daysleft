@@ -1,5 +1,7 @@
 import firebase from 'firebase';
+import { AsyncStorage } from 'react-native';
 import { Actions } from 'react-native-router-flux';
+import Reactotron from 'reactotron-react-native';
 import {
   INPUT_CHANGED,
   LOGIN_USER_SUCCESS,
@@ -7,6 +9,9 @@ import {
   LOGIN_USER
 } from './types';
 
+
+var LOGIN_EMAIL = '@AsyncStorageLogin:LoginEmail';
+var LOGIN_PASSWORD = '@AsyncStorageLogin:LoginPAssword';
 
 export const inputChanged = ({ prop, value }) => {
   return {
@@ -29,11 +34,15 @@ export const loginUser = ({ email, password }) => {
           .catch(() => loginUserFail(dispatch));
       });
   };
-
 };
+
+
 const loginUserFail = (dispatch) => {
   dispatch({ type: LOGIN_USER_FAIL });
+  this._onRemoveUser(LOGIN_EMAIL, LOGIN_PASSWORD);
 };
+
+
 
 const loginUserSuccess = (dispatch, user) => {
   dispatch({
@@ -41,6 +50,32 @@ const loginUserSuccess = (dispatch, user) => {
     payload: user
   });
 
+  this._onSaveUser(user);
+
   Actions.main();
 
+};
+
+_onSaveUser = async (userData) => {
+  const email = userData.providerData[0].uid;
+  const password = userData.providerData[0].providerId;
+  try {
+    await AsyncStorage.setItem(LOGIN_EMAIL, email);
+  } catch (error) {
+    console.log('AsyncStorage error: ' + error.message);
+  }
+  try {
+    await AsyncStorage.setItem(LOGIN_PASSWORD, password);
+  } catch (error) {
+    console.log('AsyncStorage error: ' + error.message);
+  }
+};
+
+_onRemoveUser = async (userData) => {
+  try {
+    await AsyncStorage.removeItem(email);
+    await AsyncStorage.removeItem(password);
+  } catch (error) {
+    console.log('AsyncStorage error: ' + error.message);
+  }
 };

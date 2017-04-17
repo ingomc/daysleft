@@ -1,29 +1,22 @@
 import React, {Component} from 'react';
-import {StatusBar, Text, Image, ActivityIndicator, LayoutAnimation} from 'react-native';
+import {StatusBar, Text, Image, ActivityIndicator, LayoutAnimation, AsyncStorage } from 'react-native';
 import LoginForm from './LoginForm';
+import Reactotron from 'reactotron-react-native';
+import { loginUser } from '../actions';
+import { connect } from 'react-redux';
+
+var LOGIN_EMAIL = '@AsyncStorageLogin:LoginEmail';
+var LOGIN_PASSWORD = '@AsyncStorageLogin:LoginPAssword';
+
 
 class Login extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            loading: true
-        };
-    }
 
     componentWillUpdate() {
         LayoutAnimation.easeInEaseOut();
     }
 
-    setToggleTimeout() {
-        this._timer = setTimeout(() => {
-            this.setState({
-                loading: !this.state.loading
-            });
-        }, 2000);
-    }
-
     renderForm() {
-        if (this.state.loading == true) {
+        if (this.props.loading) {
             return (<ActivityIndicator style={{
                 flex: 1,
                 backgroundColor: 'transparent'
@@ -31,9 +24,30 @@ class Login extends Component {
         }
         return (<LoginForm />);
     }
+
     componentDidMount() {
-        this.setToggleTimeout();
+        this._loadInitialState().done();
     }
+
+    _loadInitialState = async () => {
+      try {
+        var email = await AsyncStorage.getItem(LOGIN_EMAIL);
+        var password = await AsyncStorage.getItem(LOGIN_PASSWORD);
+        if (email !== null && password !== null ){
+            console.log(email);
+            console.log(password);
+            this.props.loginUser({ email, password });
+        } else {
+            console.log('Keine Value im store');
+            this.props.loading = false;
+        }
+      } catch (error) {
+          console.log('AsyncStorage error: ' + error.message);
+          this.props.loading = false;
+          await AsyncStorage.removeItem(LOGIN_EMAIL);
+          await AsyncStorage.removeItem(LOGIN_PASSWORD);
+      }
+    };
 
     render() {
         return (
@@ -54,4 +68,10 @@ var styles = {
     }
 };
 
-export default Login;
+const mapStateToProps = ({ auth }) => {
+  const { loading } = auth;
+
+  return { loading };
+};
+
+export default connect(mapStateToProps, { loginUser })(Login);

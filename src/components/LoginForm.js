@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {View, Text, Image } from 'react-native';
 import {Card, Button, SocialIcon, FormLabel, FormInput} from 'react-native-elements';
-import Reactotron from 'reactotron-react-native';
 import { connect } from 'react-redux';
 import { inputChanged, loginUser } from '../actions';
 import { Spinner } from './common';
@@ -9,8 +8,6 @@ import { Spinner } from './common';
 
 class LoginForm extends Component {
   onButtonPress() {
-    Reactotron.log(this.props);
-
     const { email, password } = this.props;
 
     this.props.loginUser({ email, password });
@@ -25,28 +22,6 @@ class LoginForm extends Component {
       }
 
   }
-  renderButton() {
-    if (this.props.loading) {
-      return (
-        <Spinner />
-      );
-    }
-    return (
-      <Button
-        onPress={this.onButtonPress.bind(this)}
-        buttonStyle={{
-            marginTop: 20,
-            marginBottom: 20,
-            marginLeft: 20,
-            marginRight: 20
-        }}
-        raised
-        borderRadius={3}
-        backgroundColor='#397af8'
-        title='Einloggen / Registrieren'
-      />
-    );
-}
   render() {
     return (
         <View style={styles.containerStyle}>
@@ -89,7 +64,19 @@ class LoginForm extends Component {
 
 
                 {this.renderError()}
-                {this.renderButton()}
+                  <Button
+                    onPress={this.onButtonPress.bind(this)}
+                    buttonStyle={{
+                        marginTop: 20,
+                        marginBottom: 20,
+                        marginLeft: 20,
+                        marginRight: 20
+                    }}
+                    raised
+                    borderRadius={3}
+                    backgroundColor='#397af8'
+                    title='Einloggen / Registrieren'
+                  />
 
             </Card>
 
